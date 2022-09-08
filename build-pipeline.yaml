@@ -38,8 +38,8 @@ spec:
   - name: build-and-push
     taskRef:
       name: build-from-dockerfile
-    runAfter:
-      - imageTag
+    # runAfter:
+    #   - imageTag
     params:
       - name: DOCKERFILE_PATH
         value: "./Dockerfile"
