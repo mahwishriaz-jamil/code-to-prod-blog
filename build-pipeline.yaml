@@ -29,6 +29,7 @@ spec:
   - name: basic-ocp-demo-image
     type: image
   - name: basic-ocp-demo-git
+    type: git
   params:
   - name: imageTag
     type: string
