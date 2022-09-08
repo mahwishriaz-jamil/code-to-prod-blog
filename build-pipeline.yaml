@@ -1,32 +1,32 @@
 apiVersion: tekton.dev/v1alpha1
 kind: PipelineResource
 metadata:
-  name: reverse-words-git
+  name: basic-ocp-demo
 spec:
   type: git
   params:
   - name: url
-    value: https://github.com/mvazquezc/reverse-words
+    value: https://github.com/FreedomBen/basic-ocp-demo
 ---
 apiVersion: tekton.dev/v1alpha1
 kind: PipelineResource
 metadata:
-  name: reverse-words-image
+  name: basic-ocp-demo-image
 spec:
   type: image
   params:
   - name: url
-    value: quay.io/mavazque/tekton-reversewords
+    value: quay.io/freedomben/basic-ocp-demo:latest
 ---
 apiVersion: tekton.dev/v1alpha1
 kind: Pipeline
 metadata:
-  name: reverse-words-build-pipeline
+  name: basic-ocp-demo-build-pipeline
 spec:
   resources:
-  - name: app-git
+  - name: basic-ocp-demo
     type: git
-  - name: app-image
+  - name: basic-ocp-demo-image
     type: image
   params:
   - name: imageTag
@@ -35,41 +35,41 @@ spec:
     description: Tag for the built image
   tasks:
 
-  - name: lint
-    taskRef:
-      name: golangci-lint
-    params:
-      - name: package
-        value: github.com/mvazquezc/reverse-words
-      - name: flags
-        value: --verbose
-      - name: GOOS
-        value: "linux"
-    resources:
-      inputs:
-      - name: source
-        resource: app-git
+  # - name: lint
+  #   taskRef:
+  #     name: golangci-lint
+  #   params:
+  #     - name: package
+  #       value: github.com/mvazquezc/reverse-words
+  #     - name: flags
+  #       value: --verbose
+  #     - name: GOOS
+  #       value: "linux"
+  #   resources:
+  #     inputs:
+  #     - name: source
+  #       resource: app-git
 
-  - name: test
-    taskRef:
-      name: golang-test
-    runAfter:
-      - lint
-    params:
-      - name: package
-        value: github.com/mvazquezc/reverse-words
-      - name: GOOS
-        value: "linux"
-    resources:
-      inputs:
-      - name: source
-        resource: app-git
+  # - name: test
+  #   taskRef:
+  #     name: golang-test
+  #   runAfter:
+  #     - lint
+  #   params:
+  #     - name: package
+  #       value: github.com/mvazquezc/reverse-words
+  #     - name: GOOS
+  #       value: "linux"
+  #   resources:
+  #     inputs:
+  #     - name: source
+  #       resource: app-git
 
   - name: build-and-push
     taskRef:
       name: build-from-dockerfile
     runAfter:
-      - test
+      - imageTag
     params:
       - name: DOCKERFILE_PATH
         value: "./Dockerfile"
@@ -78,7 +78,7 @@ spec:
     resources:
       inputs:
       - name: source
-        resource: app-git
+        resource: basic-ocp-demo-git
       outputs:
       - name: image
-        resource: app-image
+        resource: basic-ocp-demo-image
