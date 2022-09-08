@@ -61,9 +61,9 @@ metadata:
 spec:
   serviceAccountName: pipeline
   triggers:
-    - bindings:
-        name: github-triggerbinding
-      template:
+    # - bindings:
+    #     name: github-triggerbinding
+    - template:
         name: reverseword-build-triggertemplate
 ---
 apiVersion: route.openshift.io/v1
