@@ -8,6 +8,7 @@ spec:
       description: The git revision
       default: master
     - name: gitrepositoryurl
+      default: https://github.com/mahwishriaz-jamil/code-to-prod-blog.git
       description: The git repository url
   resourcetemplates:
     - apiVersion: tekton.dev/v1alpha1
