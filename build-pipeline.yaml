@@ -52,3 +52,30 @@ spec:
       outputs:
       - name: image
         resource: basic-ocp-demo-image
+---
+apiVersion: tekton.dev/v1alpha1
+kind: Task
+metadata:
+  name: build-from-dockerfile
+spec:
+  inputs:
+    resources:
+    - name: source
+      type: git
+    - name: basic-ocp-demo-git
+      type: git
+    - name: basic-ocp-demo-git
+    params:
+    - name: TLSVERIFY
+      description: Verify the TLS on the registry endpoint (for push/pull to a non-TLS registry)
+      default: "true"
+    - name: DOCKERFILE_PATH
+      description: Path to the Dockerfile file
+      default: ./Dockerfile
+    - name: IMAGE_TAG
+      description: Tag for the built image
+      default: latest
+  outputs:
+    resources:
+    - name: image
+      type: image
