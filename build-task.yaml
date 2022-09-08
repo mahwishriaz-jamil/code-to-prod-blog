@@ -9,6 +9,7 @@ spec:
       type: git
     - name: basic-ocp-demo-git
       type: git
+      default: quay.io/freedomben/basic-ocp-demo
     params:
     - name: TLSVERIFY
       description: Verify the TLS on the registry endpoint (for push/pull to a non-TLS registry)
