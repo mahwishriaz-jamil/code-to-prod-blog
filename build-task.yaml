@@ -5,6 +5,8 @@ metadata:
 spec:
   inputs:
     resources:
+    - name: source
+      type: git
     - name: basic-ocp-demo-git
       type: git
     params:
